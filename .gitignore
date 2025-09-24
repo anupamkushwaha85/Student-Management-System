@@ -1,0 +1,20 @@
+# IntelliJ IDEA Project Files
+.idea/
+*.iml
+
+# Compiled output
+out/
+
+# Build files
+build/
+target/
+
+# Log files
+*.log
+
+# Operating System files
+.DS_Store
+Thumbs.db
+
+# Application data file
+students.json
