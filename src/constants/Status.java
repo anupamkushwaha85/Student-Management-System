@@ -44,14 +44,7 @@ public enum Status {
     public String getCode() {
         return code;
     }
-    /**
-     * Gets the human-readable name for the status.
-     *
-     * @return The display name (e.g., "Active").
-     */
-    public String getDisplayName() {
-        return displayName;
-    }
+
     /**
      * Finds a Status constant that matches the given code.
      * <p>

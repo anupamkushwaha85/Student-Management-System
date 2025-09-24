@@ -4,6 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import java.util.logging.Logger;
+import java.util.logging.Level;
+
 import model.Student; 
 import utility.LocalDateAdapter;
 import utility.StudentTypeAdapter;
@@ -30,6 +33,12 @@ import java.util.List;
  * rest of the application does not need to be aware of the persistence mechanism.
  */
 public class JSONStorage {
+    /**
+     * The logger instance for this class.
+     * This logger is used to record messages for a specific system or application component.
+     * It helps in diagnosing problems by providing contextual information about application execution.
+     */
+    private static final Logger LOGGER = Logger.getLogger(JSONStorage.class.getName());
 
     /**
      * The constant path for the JSON file where student data is stored.
@@ -71,7 +80,7 @@ public class JSONStorage {
             System.out.println("Data successfully saved to " + FILE_PATH);
         } catch (IOException e) {
             System.err.println("Error: Failed to save data to file '" + FILE_PATH + "'.");
-            e.printStackTrace(); // Print the full error for debugging.
+            LOGGER.log(Level.SEVERE, "An error occurred", e);
         }
     }
     /**
@@ -101,7 +110,7 @@ public class JSONStorage {
             return students;
         } catch (IOException e) {
             System.err.println("Error: Failed to load data from file '" + FILE_PATH + "'.");
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "An error occurred", e);
             return new ArrayList<>();
         }
     }

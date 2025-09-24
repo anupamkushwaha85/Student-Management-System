@@ -55,6 +55,7 @@ This project is built using a classic 3-tier layered architecture to ensure sepa
         - A `LocalDateAdapter` to ensure `java.time.LocalDate` objects are consistently serialized as a simple **`"yyyy-MM-dd"` string**, rather than Gson's default, complex JSON object.
         - A `StudentTypeAdapter` to manage the **immutable `Student` class**, which lacks a no-argument constructor. This ensures that all business-level validations are enforced even during deserialization from the JSON file.
 - **Unit Testing:** **JUnit 5** and **Mockito 5** for testing the service layer.
+- **Logging:** `java.util.logging` to track application flow and capture detailed error messages and stack traces, facilitating easier debugging and maintenance.
 
 ---
 

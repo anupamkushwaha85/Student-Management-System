@@ -38,54 +38,29 @@ public class StudentRepoInMemory implements StudentRepo {
      *                    reading from and writing to the JSON file.
      */
 	    public StudentRepoInMemory(JSONStorage jsonStorage) {
-	        // 1. Initialize the necessary fields for the repository.
-	        this.jsonStorage = jsonStorage;
-	        this.idCounter = new AtomicInteger();
+            // 1. Initialize the necessary fields for the repository.
+            this.jsonStorage = jsonStorage;
+            this.idCounter = new AtomicInteger();
 
-	        // 2. Load the initial list of students from the JSON file.
-	        List<Student> initialStudents = jsonStorage.loadStudents();
+            // 2. Load the initial list of students from the JSON file.
+            List<Student> initialStudents = jsonStorage.loadStudents();
 
-	        // 3. Populate the internal HashMap for fast, key-based access.
-	        // This uses a stream for a modern and efficient conversion from List to Map.
-	        this.students = initialStudents.stream()
-	                .collect(Collectors.toMap(Student::getId, student -> student));
+            // 3. Populate the internal HashMap for fast, key-based access.
+            // This uses a stream for a modern and efficient conversion from List to Map.
+            this.students = initialStudents.stream()
+                    .collect(Collectors.toMap(Student::id, student -> student));
 
-	        // 4. Find the highest ID among the loaded students. This is the crucial
-	        //    step to ensure the ID counter starts at the correct position.
-	        int maxId = initialStudents.stream()
-	                .mapToInt(Student::getId)  // Create a stream of integer IDs
-	                .max()                     // Find the largest integer in the stream
-	                .orElse(100);              // If the list was empty, default to 100.
-	                                           // This ensures the first new ID will be 101.
+            // 4. Find the highest ID among the loaded students. This is the crucial
+            //    step to ensure the ID counter starts at the correct position.
+            int maxId = initialStudents.stream()
+                    .mapToInt(Student::id)  // Create a stream of integer IDs
+                    .max()                     // Find the largest integer in the stream
+                    .orElse(100);              // If the list was empty, default to 100.
+            // This ensures the first new ID will be 101.
 
-	        // 5. Set the counter's starting point to the highest ID found.
-	        this.idCounter.set(maxId);
-	    }
-    /**
-     * A secondary constructor intended for testing purposes.
-     * <p>
-     * This allows creating a repository instance with a predefined list of students,
-     * bypassing the JSON file loading mechanism for isolated unit tests where
-     * file I/O is not desirable.
-     *
-     * @param initialStudents A list of students to initialize the repository with.
-     */
-	    public StudentRepoInMemory(List<Student> initialStudents) {
-	        // We don't need the jsonStorage object for this test constructor.
-	        this.jsonStorage = null; 
-
-	        // Populate the map from the provided list.
-	        this.students = initialStudents.stream()
-	                .collect(Collectors.toMap(Student::getId, student -> student));
-
-	        // Find the highest ID from the provided list to set the counter.
-	        int maxId = initialStudents.stream()
-	                .mapToInt(Student::getId)
-	                .max()
-	                .orElse(100);
-
-	        this.idCounter = new AtomicInteger(maxId);
-	    }
+            // 5. Set the counter's starting point to the highest ID found.
+            this.idCounter.set(maxId);
+        }
     /**
      * A private helper method that persists the current state of the in-memory
      * student map to the JSON file.
@@ -136,9 +111,9 @@ public class StudentRepoInMemory implements StudentRepo {
 		@Override
 		public Optional<Student> update(Student student) {
 		    // First, check if a student with this ID exists.
-		    if (students.containsKey(student.getId())) {
+		    if (students.containsKey(student.id())) {
 		        // If yes, replace the old entry with the new student object.
-		        students.put(student.getId(), student);
+		        students.put(student.id(), student);
 		        persistData(); // **Save the new state to the file**
 		        // Return an Optional containing the updated student.
 		        return Optional.of(student);

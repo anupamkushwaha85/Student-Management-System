@@ -56,14 +56,6 @@ public enum Departments {
         return code;
     }
     /**
-     * Gets the full display name of the department.
-     *
-     * @return The department's full name (e.g., "Computer Science & Engineering").
-     */
-    public String getDisplayName() {
-        return displayName;
-    }
-    /**
      * Safely finds a department from a given code or name string.
      * <p>
      * This method performs a case-insensitive search against both the department's

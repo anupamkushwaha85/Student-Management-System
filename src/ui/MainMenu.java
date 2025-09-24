@@ -148,7 +148,7 @@ public class MainMenu {
             Student newStudent = studentService.createStudent(name, email, phone, dob, address, departmentStr, statusStr);
 
             System.out.println("\nSUCCESS: Student added successfully!");
-            System.out.println("Assigned Student ID: " + newStudent.getId());
+            System.out.println("Assigned Student ID: " + newStudent.id());
         } catch (IllegalArgumentException e) {
             System.err.println("\nERROR: Could not add student. " + e.getMessage());
         } catch (Exception e) {
@@ -234,7 +234,7 @@ public class MainMenu {
     private void showUpdateSubMenu(Student student) {
         boolean back = false;
         while (!back) {
-            System.out.println("\n--- Updating Student: " + student.getName() + " (ID: " + student.getId() + ") ---");
+            System.out.println("\n--- Updating Student: " + student.name() + " (ID: " + student.id() + ") ---");
             System.out.println("Which field would you like to update?");
             System.out.println("1. Name");
             System.out.println("2. Email");
@@ -258,7 +258,7 @@ public class MainMenu {
                     System.out.print("Enter the new name: ");
                     String newName = scanner.nextLine();
                     try {
-                        Optional<Student> updated = studentService.updateStudentName(student.getId(), newName);
+                        Optional<Student> updated = studentService.updateStudentName(student.id(), newName);
                         if (updated.isPresent()) {
                             student = updated.get(); // Update local student object
                             System.out.println("\nSUCCESS: Name updated successfully.");
@@ -272,7 +272,7 @@ public class MainMenu {
                     System.out.print("Enter the new email: ");
                     String newEmail = scanner.nextLine();
                     try {
-                        Optional<Student> updated = studentService.updateStudentEmail(student.getId(), newEmail);
+                        Optional<Student> updated = studentService.updateStudentEmail(student.id(), newEmail);
                         if (updated.isPresent()) {
                             student = updated.get();
                             System.out.println("\nSUCCESS: Email updated successfully.");
@@ -286,7 +286,7 @@ public class MainMenu {
                     System.out.print("Enter the new phone number: ");
                     String newPhone = scanner.nextLine();
                     try {
-                        Optional<Student> updated = studentService.updateStudentPhone(student.getId(), newPhone);
+                        Optional<Student> updated = studentService.updateStudentPhone(student.id(), newPhone);
                         if (updated.isPresent()) {
                             student = updated.get();
                             System.out.println("\nSUCCESS: Phone number updated successfully.");
@@ -299,7 +299,7 @@ public class MainMenu {
                 case 4 -> {
                     System.out.print("Enter the new address: ");
                     String newAddress = scanner.nextLine();
-                    Optional<Student> updated = studentService.updateStudentAddress(student.getId(), newAddress);
+                    Optional<Student> updated = studentService.updateStudentAddress(student.id(), newAddress);
                     if (updated.isPresent()) {
                         student = updated.get();
                         System.out.println("\nSUCCESS: Address updated successfully.");
@@ -310,7 +310,7 @@ public class MainMenu {
                     System.out.print("Enter the new department: ");
                     String newDepartment = scanner.nextLine();
                     try {
-                        Optional<Student> updated = studentService.updateStudentDepartment(student.getId(), newDepartment);
+                        Optional<Student> updated = studentService.updateStudentDepartment(student.id(), newDepartment);
                         if (updated.isPresent()) {
                             student = updated.get();
                             System.out.println("\nSUCCESS: Department updated successfully.");
@@ -324,7 +324,7 @@ public class MainMenu {
                     System.out.print("Enter the new status: ");
                     String newStatus = scanner.nextLine();
                     try {
-                        Optional<Student> updated = studentService.updateStudentStatus(student.getId(), newStatus);
+                        Optional<Student> updated = studentService.updateStudentStatus(student.id(), newStatus);
                         if (updated.isPresent()) {
                             student = updated.get();
                             System.out.println("\nSUCCESS: Status updated successfully.");

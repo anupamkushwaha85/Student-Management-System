@@ -69,7 +69,7 @@ class StudentServiceTest {
 
         // ASSERT
         assertNotNull(createdStudent);
-        assertEquals(1, createdStudent.getId());
+        assertEquals(1, createdStudent.id());
     }
     /**
      * Tests student creation with an invalid email address.
@@ -82,12 +82,10 @@ class StudentServiceTest {
     @Test
     void testCreateStudent_InvalidEmail_ThrowsException() {
         // ARRANGE & ACT & ASSERT
-        assertThrows(IllegalArgumentException.class, () -> {
-            studentService.createStudent(
-                    "Jane Doe", "invalid-email", "9876543210", "2006-01-15",
-                    "456 Oak Ave", "MECH", "ACTIVE"
-            );
-        });
+        assertThrows(IllegalArgumentException.class, () -> studentService.createStudent(
+                "Jane Doe", "invalid-email", "9876543210", "2006-01-15",
+                "456 Oak Ave", "MECH", "ACTIVE"
+        ));
 
         verify(studentRepo, never()).save(any(), any(), any(), any(), any(), any(), any());
     }
@@ -110,8 +108,8 @@ class StudentServiceTest {
 
         // ASSERT
         assertTrue(foundStudent.isPresent());
-        assertEquals(1, foundStudent.get().getId());
-        assertEquals("John Doe", foundStudent.get().getName());
+        assertEquals(1, foundStudent.get().id());
+        assertEquals("John Doe", foundStudent.get().name());
     }
     /**
      * Tests finding a student by an ID that does not exist.
@@ -193,7 +191,7 @@ class StudentServiceTest {
         // ASSERT
         assertNotNull(result);
         assertEquals(2, result.size()); // Check that the list contains two students.
-        assertEquals("Jane Smith", result.get(1).getName());
+        assertEquals("Jane Smith", result.get(1).name());
     }
     /**
      * Tests the successful update of a student's name.
@@ -220,7 +218,7 @@ class StudentServiceTest {
 
         // ASSERT
         assertTrue(result.isPresent());
-        assertEquals("Johnathan Doe", result.get().getName());
+        assertEquals("Johnathan Doe", result.get().name());
         verify(studentRepo).findById(1);
         verify(studentRepo).update(any(Student.class));
     }
@@ -263,9 +261,7 @@ class StudentServiceTest {
         when(studentRepo.findById(1)).thenReturn(Optional.of(existingStudent));
 
         // ACT & ASSERT
-        assertThrows(IllegalArgumentException.class, () -> {
-            studentService.updateStudentName(1, "Invalid@Name");
-        });
+        assertThrows(IllegalArgumentException.class, () -> studentService.updateStudentName(1, "Invalid@Name"));
 
         verify(studentRepo, never()).update(any(Student.class));
     }

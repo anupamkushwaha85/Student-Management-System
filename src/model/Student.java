@@ -7,28 +7,20 @@ import utility.ValidationUtils;
 
 /**
  * Represents an immutable data object for a student in the system.
- *  * <p>
- *  * This class encapsulates all information related to a single student, including personal
- *  * details, contact information, and academic status. The class is immutable, meaning a
- *  * Student object cannot be changed after it is created. Instead, "with" methods are
- *  * provided to create new Student instances with updated values.
- *  * <p>
- *  * All data is validated within the constructor to ensure that a Student object can never
- *  * exist in an invalid state.
- *  *
- *  * @author Anupam Kushwaha
- *  * @version 1.0
+ * * <p>
+ * * This class encapsulates all information related to a single student, including personal
+ * * details, contact information, and academic status. The class is immutable, meaning a
+ * * Student object cannot be changed after it is created. Instead, "with" methods are
+ * * provided to create new Student instances with updated values.
+ * * <p>
+ * * All data is validated within the constructor to ensure that a Student object can never
+ * * exist in an invalid state.
+ * *
+ * * @author Anupam Kushwaha
+ * * @version 1.0
  */
-public class Student {
-	private final int id;
-	private final String name;
-	private final String email;
-	private final String phone;
-	private final LocalDate DOB; 
-	private final String address;
-	private final Departments department;
-	private final Status status;
-
+public record Student(int id, String name, String email, String phone, LocalDate DOB, String address,
+                      Departments department, Status status) {
     /**
      * Constructs a new Student instance with the specified details.
      * <p>
@@ -45,57 +37,31 @@ public class Student {
      * @param status     The student's current enrollment status.
      * @throws IllegalArgumentException if name, email, or phone number are invalid.
      */
-	public Student(int id, String name, String email, String phone, LocalDate DOB, String address, Departments department, Status status) {
-		this.id = id;
-		if(!ValidationUtils.isValidName(name)) {
-			throw new IllegalArgumentException("Invalid name format.");
-		}
-		this.name = name;
-		
-		if (!ValidationUtils.isValidEmail(email)) {
-		    throw new IllegalArgumentException("Invalid email format.");
-		}
+    public Student(int id, String name, String email, String phone, LocalDate DOB, String address, Departments department, Status status) {
+        this.id = id;
+        if (!ValidationUtils.isValidName(name)) {
+            throw new IllegalArgumentException("Invalid name format.");
+        }
+        this.name = name;
 
-		this.email = ValidationUtils.normalizeEmail(email);
-		
-		if(!ValidationUtils.isValidPhone(phone)) {
-			throw new IllegalArgumentException("Invalid phone number.");
-		}
-		this.phone = ValidationUtils.normalizePhone(phone);
-		
-		
-		this.DOB = DOB;
-		this.address = address;
-		this.department = department;
-		this.status = status;
-	}
-	
-	
-	// getters
-	public int getId() {
-		return id;
-	}
-	public String getName() {
-		return name;
-	}
-	public String getEmail() {
-		return email;
-	}
-	public String getPhone() {
-		return phone;
-	}
-	public String getAddress() {
-		return address;
-	}
-	public LocalDate getDOB() {
-		return DOB;
-	}
-	public Departments getDepartment() {
-		return department;
-	}
-	public Status getStatus() {
-		return status;
-	}
+        if (!ValidationUtils.isValidEmail(email)) {
+            throw new IllegalArgumentException("Invalid email format.");
+        }
+
+        this.email = ValidationUtils.normalizeEmail(email);
+
+        if (!ValidationUtils.isValidPhone(phone)) {
+            throw new IllegalArgumentException("Invalid phone number.");
+        }
+        this.phone = ValidationUtils.normalizePhone(phone);
+
+
+        this.DOB = DOB;
+        this.address = address;
+        this.department = department;
+        this.status = status;
+    }
+
 
     /**
      * Creates a new Student instance with an updated name.
@@ -103,72 +69,75 @@ public class Student {
      * @param newName The new name for the student.
      * @return A new Student object with the name changed.
      */
-	public Student withName(String newName) {
-	    return new Student(
-	        this.id,
-	        newName,
-	        this.email,
-	        this.phone,
-	        this.DOB,
-	        this.address,
-	        this.department,
-	        this.status
-	    );
-	}
+    public Student withName(String newName) {
+        return new Student(
+                this.id,
+                newName,
+                this.email,
+                this.phone,
+                this.DOB,
+                this.address,
+                this.department,
+                this.status
+        );
+    }
+
     /**
      * Creates a new Student instance with an updated email.
      *
      * @param newEmail The new email for the student.
      * @return A new Student object with the email changed.
      */
-	public Student withEmail(String newEmail) {
-	    return new Student(
-	        this.id,
-	        this.name,
-	        newEmail,
-	        this.phone,
-	        this.DOB,
-	        this.address,
-	        this.department,
-	        this.status
-	    );
-	}
+    public Student withEmail(String newEmail) {
+        return new Student(
+                this.id,
+                this.name,
+                newEmail,
+                this.phone,
+                this.DOB,
+                this.address,
+                this.department,
+                this.status
+        );
+    }
+
     /**
      * Creates a new Student instance with an updated Phone.
      *
      * @param newPhone The new Phone for the student.
      * @return A new Student object with the Phone no changed.
      */
-	public Student withPhone(String newPhone) {
-	    return new Student(
-	        this.id,
-	        this.name,
-	        this.email,
-	        newPhone,
-	        this.DOB,
-	        this.address,
-	        this.department,
-	        this.status
-	    );
-	}
+    public Student withPhone(String newPhone) {
+        return new Student(
+                this.id,
+                this.name,
+                this.email,
+                newPhone,
+                this.DOB,
+                this.address,
+                this.department,
+                this.status
+        );
+    }
+
     /**
      * Creates a new Student instance with an updated Address.
      *
      * @param newAddress The new address for the student.
      * @return A new Student object with the address changed.
      */
-	public Student withAddress(String newAddress) {
-	    return new Student(
-	        this.id,
-	        this.name,
-	        this.email,
-	        this.phone,
-	        this.DOB,
-	        newAddress,
-	        this.department,
-	        this.status
-	    );
-	}
+    public Student withAddress(String newAddress) {
+        return new Student(
+                this.id,
+                this.name,
+                this.email,
+                this.phone,
+                this.DOB,
+                newAddress,
+                this.department,
+                this.status
+        );
+    }
 
     /**
      * Creates a new Student instance with an updated Department.
@@ -176,18 +145,18 @@ public class Student {
      * @param newDepartment The new department for the student.
      * @return A new Student object with the department changed.
      */
-	public Student withDepartment(Departments newDepartment) {
-	    return new Student(
-	        this.id,
-	        this.name,
-	        this.email,
-	        this.phone,
-	        this.DOB,
-	        this.address,
-	        newDepartment,
-	        this.status
-	    );
-	}
+    public Student withDepartment(Departments newDepartment) {
+        return new Student(
+                this.id,
+                this.name,
+                this.email,
+                this.phone,
+                this.DOB,
+                this.address,
+                newDepartment,
+                this.status
+        );
+    }
 
     /**
      * Creates a new Student instance with an updated Status.
@@ -195,31 +164,31 @@ public class Student {
      * @param newStatus The new Status for the student.
      * @return A new Student object with the status changed.
      */
-	public Student withStatus(Status newStatus) {
-	    return new Student(
-	        this.id,
-	        this.name,
-	        this.email,
-	        this.phone,
-	        this.DOB,
-	        this.address,
-	        this.department,
-	        newStatus
-	    );
-	}
+    public Student withStatus(Status newStatus) {
+        return new Student(
+                this.id,
+                this.name,
+                this.email,
+                this.phone,
+                this.DOB,
+                this.address,
+                this.department,
+                newStatus
+        );
+    }
 
     /**
      * {@inheritDoc}
      * <p>
      * Two Student objects are considered equal if they have the same ID.
      */
-	@Override
+    @Override
     public boolean equals(Object o) {
-        if(this == o) return true;
-        if(!(o instanceof Student)) return false;
-        Student s = (Student) o;
+        if (this == o) return true;
+        if (!(o instanceof Student s)) return false;
         return this.id == s.id;
     }
+
     /**
      * {@inheritDoc}
      * <p>
@@ -229,16 +198,17 @@ public class Student {
     public int hashCode() {
         return Integer.hashCode(id);
     }
+
     /**
      * Returns a string representation of the student's core details.
      *
      * @return A formatted string including name, ID, contact info, department and status.
      */
-	@Override
-	public String toString() {
-		
-		return "\nName: "+name+"\nid: "+id+"\nphone: "+phone+"\nemail: "+email+ 
-				"\nDOB: "+DOB+"\ndepartment: "+department+"\naddress: "+address;
-	}
-	
+    @Override
+    public String toString() {
+
+        return "\nName: " + name + "\nid: " + id + "\nphone: " + phone + "\nemail: " + email +
+                "\nDOB: " + DOB + "\ndepartment: " + department + "\naddress: " + address;
+    }
+
 }

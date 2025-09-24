@@ -30,14 +30,14 @@ public class StudentTypeAdapter extends TypeAdapter<Student> {
     @Override
     public void write(JsonWriter out, Student student) throws IOException {
         out.beginObject();
-        out.name("id").value(student.getId());
-        out.name("name").value(student.getName());
-        out.name("email").value(student.getEmail());
-        out.name("phone").value(student.getPhone());
-        out.name("DOB").value(student.getDOB().toString());
-        out.name("address").value(student.getAddress());
-        out.name("department").value(student.getDepartment().name());
-        out.name("status").value(student.getStatus().name());
+        out.name("id").value(student.id());
+        out.name("name").value(student.name());
+        out.name("email").value(student.email());
+        out.name("phone").value(student.phone());
+        out.name("DOB").value(student.DOB().toString());
+        out.name("address").value(student.address());
+        out.name("department").value(student.department().name());
+        out.name("status").value(student.status().name());
         out.endObject();
     }
     /**
