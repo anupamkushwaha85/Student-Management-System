@@ -31,7 +31,7 @@ The primary motivation behind this project was to bridge the gap between academi
 - **CRUD Operations:** Full support for creating, reading, finding, updating, and deleting student records.
 - **Data Persistence:** Student data is automatically saved to a `students.json` file on exit and loaded on startup using the Gson library.
 - **Robust Validation:** A dedicated `ValidationUtils` class ensures all user inputs (name, email, phone, date of birth) are valid before processing. Age is also validated to be within a reasonable range.
-- **Immutable Data Model:** The `Student` class is fully immutable to ensure data integrity and thread safety.
+- **Immutable Data Model:** The `Student` data carrier is implemented as a Java `record`, ensuring it is a transparent and truly immutable data aggregate by design. This modern approach reduces boilerplate and enhances thread safety and data integrity.
 - **Dynamic Greeting:** The application greets the user with a time-appropriate message (e.g., "Good Morning," "Have a Good Day," "Good Night") upon exit.
 - **Layered and Flexible Architecture:** The project's structure is cleanly separated and flexible, making it easy to add or modify features in future versions.
 - **Comprehensive Exception Handling:** Implemented robust exception handling to manage invalid inputs and potential runtime errors gracefully.
