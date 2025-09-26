@@ -1,3 +1,9 @@
+> [!WARNING]
+> **Copyright &copy; 2025 `Anupam Kushwaha`. All Rights Reserved.**
+>
+> This project is protected by copyright law. Unauthorized reproduction, distribution, or modification of this project, in whole or in part, is strictly prohibited.
+
+
 # Student Management System (Java + JSON) v1.0
 
 A simple, robust, and console-based application for managing student records, built with Java (JDK 23). This project demonstrates core Java principles, object-oriented design, and best practices in software development, including data persistence with JSON, a layered architecture, and comprehensive unit testing.
