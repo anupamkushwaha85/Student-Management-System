@@ -1,6 +1,5 @@
 package repository;
 
-import repository.StudentRepo;
 
 import constants.Departments;
 import constants.Status;

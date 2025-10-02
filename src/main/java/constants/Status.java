@@ -36,14 +36,6 @@ public enum Status {
         this.code = code;
         this.displayName = displayName;
     }
-    /**
-     * Gets the machine-readable code for the status.
-     *
-     * @return The status code (e.g., "ACTIVE").
-     */
-    public String getCode() {
-        return code;
-    }
 
     /**
      * Finds a Status constant that matches the given code.
