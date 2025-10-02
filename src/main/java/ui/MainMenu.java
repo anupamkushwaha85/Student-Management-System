@@ -1,9 +1,6 @@
 package ui;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.Scanner;
-
 
 import model.Student;
 import service.StudentService;
@@ -35,12 +32,12 @@ public class MainMenu {
      * This constructor initializes the menu with a required {@link StudentService} dependency
      * and creates a new {@link Scanner} instance to read input from the console.
      *
-     * @param studentService The service layer that provides the business logic for
+     * @param studentServices The service layer that provides the business logic for
      *                       student operations. It must not be null.
      */
-    public MainMenu(StudentService studentService) {
-        this.studentService = studentService;
-        this.scanner = new Scanner(System.in);
+    public MainMenu(StudentService studentServices) {
+        studentService = studentServices;
+        scanner = new Scanner(System.in);
     }
     /**
      * Starts and manages the main application loop for the user interface.
@@ -55,22 +52,22 @@ public class MainMenu {
      * system resources and displays a final greeting.
      */
     public void run() {
-        boolean exit = false;
+        var  exit = false;
         // It continues until the user chooses to exit.
         while (!exit) {
             // 1. Print all the menu options to the console.
-            System.out.println("\n(:=== Student ^_^anagement System Menu ===:)");
-            System.out.println("1. Add a New Student");
-            System.out.println("2. Find a Student by ID");
-            System.out.println("3. Update a Student's Information");
-            System.out.println("4. Delete a Student");
-            System.out.println("5. Display All Students");
-            System.out.println("0. Exit Application");
+            IO.println("\n(:=== Student ^_^anagement System Menu ===:)");
+            IO.println("1. Add a New Student");
+            IO.println("2. Find a Student by ID");
+            IO.println("3. Update a Student's Information");
+            IO.println("4. Delete a Student");
+            IO.println("5. Display All Students");
+            IO.println("0. Exit Application");
 
             int choice;
             // 2. Read the user's choice safely.
             try {
-                System.out.print("\nEnter your choice: ");
+                IO.print("\nEnter your choice: ");
                 // read the whole line and then parse it to an integer.
                 // This is safer and avoids issues with the scanner's buffer.
                 choice = Integer.parseInt(scanner.nextLine());
@@ -94,7 +91,7 @@ public class MainMenu {
 
                 case 0 -> {
                     exit = true; // This will cause the while loop to terminate.
-                    System.out.println("\nThank you for using the Student Management System. " + getExitGreeting());
+                    IO.println("\nThank you for using the Student Management System. " + getExitGreeting());
                 }
 
                 default ->
@@ -121,34 +118,34 @@ public class MainMenu {
      * On success, it confirms the creation and displays the new student's system-generated ID.
      */
     private void addStudentUI() {
-        System.out.println("\n--- Add New Student ---");
+        IO.println("\n--- Add New Student ---");
 
         try {
-            System.out.print("Enter Student Name: ");
-            String name = scanner.nextLine();
+            IO.print("Enter Student Name: ");
+            var name = scanner.nextLine();
 
-            System.out.print("Enter Student Email: ");
-            String email = scanner.nextLine();
+            IO.print("Enter Student Email: ");
+            var email = scanner.nextLine();
 
-            System.out.print("Enter Student Phone Number: ");
-            String phone = scanner.nextLine();
+            IO.print("Enter Student Phone Number: ");
+            var phone = scanner.nextLine();
 
-            System.out.print("Enter Student Date of Birth (YYYY-MM-DD): ");
-            String dob = scanner.nextLine();
+            IO.print("Enter Student Date of Birth (YYYY-MM-DD): ");
+            var dob = scanner.nextLine();
 
-            System.out.print("Enter Student Address: ");
-            String address = scanner.nextLine();
+            IO.print("Enter Student Address: ");
+            var address = scanner.nextLine();
 
-            System.out.print("Enter Department (e.g., COMPUTER_SCIENCE, MECHANICAL): ");
-            String departmentStr = scanner.nextLine();
+            IO.print("Enter Department (e.g., COMPUTER_SCIENCE, MECHANICAL): ");
+            var departmentStr = scanner.nextLine();
 
-            System.out.print("Enter Status (e.g., ACTIVE, INACTIVE): ");
-            String statusStr = scanner.nextLine();
+            IO.print("Enter Status (e.g., ACTIVE, INACTIVE): ");
+            var statusStr = scanner.nextLine();
 
-            Student newStudent = studentService.createStudent(name, email, phone, dob, address, departmentStr, statusStr);
+            var newStudent = studentService.createStudent(name, email, phone, dob, address, departmentStr, statusStr);
 
-            System.out.println("\nSUCCESS: Student added successfully!");
-            System.out.println("Assigned Student ID: " + newStudent.id());
+            IO.println("\nSUCCESS: Student added successfully!");
+            IO.println("Assigned Student ID: " + newStudent.id());
         } catch (IllegalArgumentException e) {
             System.err.println("\nERROR: Could not add student. " + e.getMessage());
         } catch (Exception e) {
@@ -169,21 +166,20 @@ public class MainMenu {
      * </ul>
      */
     private void findStudentByIdUI() {
-        System.out.println("\n--- Find a Student by ID ---");
+        IO.println("\n--- Find a Student by ID ---");
 
         int studentId;
         try {
-            System.out.print("Enter the Student ID to search for: ");
+            IO.print("Enter the Student ID to search for: ");
             studentId = Integer.parseInt(scanner.nextLine());
         } catch (NumberFormatException e) {
             System.err.println("Error: Invalid ID. Please enter a valid number.");
             return; // Exit the method
         }
-        Optional<Student> studentOptional = studentService.findStudentById(studentId);
-        studentOptional.ifPresentOrElse(
+        studentService.findStudentById(studentId).ifPresentOrElse(
                 student -> {
-                    System.out.println("\n--- Student Found ---");
-                    System.out.println(student);
+                    IO.println("\n--- Student Found ---");
+                    IO.println(student);
                 },
                 () -> System.err.println("\nError: No student found with ID " + studentId)
         );
@@ -198,9 +194,9 @@ public class MainMenu {
      * If no student is found, it displays an error message to the user.
      */
     private void updateStudentUI() {
-        System.out.println("\n--- Update a Student's Information ---");
+        IO.println("\n--- Update a Student's Information ---");
 
-        System.out.print("Enter the ID of the student you want to update: ");
+        IO.print("Enter the ID of the student you want to update: ");
         int studentId;
         try {
             studentId = Integer.parseInt(scanner.nextLine());
@@ -208,8 +204,7 @@ public class MainMenu {
             System.err.println("Error: Invalid ID. Please enter a valid number.");
             return;
         }
-        Optional<Student> studentOptional = studentService.findStudentById(studentId);
-        studentOptional.ifPresentOrElse(
+        studentService.findStudentById(studentId).ifPresentOrElse(
                 this::showUpdateSubMenu, // A new method to handle the sub-menu
                 () -> System.err.println("Error: No student found with ID " + studentId)
         );
@@ -232,19 +227,19 @@ public class MainMenu {
      *                internally as the user makes changes.
      */
     private void showUpdateSubMenu(Student student) {
-        boolean back = false;
+        var back = false;
         while (!back) {
-            System.out.println("\n--- Updating Student: " + student.name() + " (ID: " + student.id() + ") ---");
-            System.out.println("Which field would you like to update?");
-            System.out.println("1. Name");
-            System.out.println("2. Email");
-            System.out.println("3. Phone Number");
-            System.out.println("4. Address");
-            System.out.println("5. Department");
-            System.out.println("6. Status");
-            System.out.println("0. Back to Main Menu");
+            IO.println("\n--- Updating Student: " + student.name() + " (ID: " + student.id() + ") ---");
+            IO.println("Which field would you like to update?");
+            IO.println("1. Name");
+            IO.println("2. Email");
+            IO.println("3. Phone Number");
+            IO.println("4. Address");
+            IO.println("5. Department");
+            IO.println("6. Status");
+            IO.println("0. Back to Main Menu");
 
-            System.out.print("Enter your choice: ");
+            IO.print("Enter your choice: ");
             int choice;
             try {
                 choice = Integer.parseInt(scanner.nextLine());
@@ -255,13 +250,13 @@ public class MainMenu {
             switch (choice) {
                 // Handle Name Update
                 case 1 -> {
-                    System.out.print("Enter the new name: ");
-                    String newName = scanner.nextLine();
+                    IO.print("Enter the new name: ");
+                    var newName = scanner.nextLine();
                     try {
-                        Optional<Student> updated = studentService.updateStudentName(student.id(), newName);
+                        var updated = studentService.updateStudentName(student.id(), newName);
                         if (updated.isPresent()) {
                             student = updated.get(); // Update local student object
-                            System.out.println("\nSUCCESS: Name updated successfully.");
+                            IO.println("\nSUCCESS: Name updated successfully.");
                         }
                     } catch (IllegalArgumentException e) {
                         System.err.println("Error: " + e.getMessage());
@@ -269,13 +264,13 @@ public class MainMenu {
                 }
                 // Handle Email Update
                 case 2 -> {
-                    System.out.print("Enter the new email: ");
-                    String newEmail = scanner.nextLine();
+                    IO.print("Enter the new email: ");
+                    var newEmail = scanner.nextLine();
                     try {
-                        Optional<Student> updated = studentService.updateStudentEmail(student.id(), newEmail);
+                        var updated = studentService.updateStudentEmail(student.id(), newEmail);
                         if (updated.isPresent()) {
                             student = updated.get();
-                            System.out.println("\nSUCCESS: Email updated successfully.");
+                            IO.println("\nSUCCESS: Email updated successfully.");
                         }
                     } catch (IllegalArgumentException e) {
                         System.err.println("Error: " + e.getMessage());
@@ -283,13 +278,13 @@ public class MainMenu {
                 }
                 // Handle Phone Update
                 case 3 -> {
-                    System.out.print("Enter the new phone number: ");
-                    String newPhone = scanner.nextLine();
+                    IO.print("Enter the new phone number: ");
+                    var newPhone = scanner.nextLine();
                     try {
-                        Optional<Student> updated = studentService.updateStudentPhone(student.id(), newPhone);
+                        var updated = studentService.updateStudentPhone(student.id(), newPhone);
                         if (updated.isPresent()) {
                             student = updated.get();
-                            System.out.println("\nSUCCESS: Phone number updated successfully.");
+                            IO.println("\nSUCCESS: Phone number updated successfully.");
                         }
                     } catch (IllegalArgumentException e) {
                         System.err.println("Error: " + e.getMessage());
@@ -297,23 +292,23 @@ public class MainMenu {
                 }
                 // Handle Address Update
                 case 4 -> {
-                    System.out.print("Enter the new address: ");
-                    String newAddress = scanner.nextLine();
-                    Optional<Student> updated = studentService.updateStudentAddress(student.id(), newAddress);
+                    IO.print("Enter the new address: ");
+                    var newAddress = scanner.nextLine();
+                    var updated = studentService.updateStudentAddress(student.id(), newAddress);
                     if (updated.isPresent()) {
                         student = updated.get();
-                        System.out.println("\nSUCCESS: Address updated successfully.");
+                        IO.println("\nSUCCESS: Address updated successfully.");
                     }
                 }
                 // Handle Department Update
                 case 5 -> {
-                    System.out.print("Enter the new department: ");
-                    String newDepartment = scanner.nextLine();
+                    IO.print("Enter the new department: ");
+                    var newDepartment = scanner.nextLine();
                     try {
-                        Optional<Student> updated = studentService.updateStudentDepartment(student.id(), newDepartment);
+                        var updated = studentService.updateStudentDepartment(student.id(), newDepartment);
                         if (updated.isPresent()) {
                             student = updated.get();
-                            System.out.println("\nSUCCESS: Department updated successfully.");
+                            IO.println("\nSUCCESS: Department updated successfully.");
                         }
                     } catch (IllegalArgumentException e) {
                         System.err.println("Error: " + e.getMessage());
@@ -321,13 +316,13 @@ public class MainMenu {
                 }
                 // Handle Status Update
                 case 6 -> {
-                    System.out.print("Enter the new status: ");
-                    String newStatus = scanner.nextLine();
+                    IO.print("Enter the new status: ");
+                    var newStatus = scanner.nextLine();
                     try {
-                        Optional<Student> updated = studentService.updateStudentStatus(student.id(), newStatus);
+                        var updated = studentService.updateStudentStatus(student.id(), newStatus);
                         if (updated.isPresent()) {
                             student = updated.get();
-                            System.out.println("\nSUCCESS: Status updated successfully.");
+                            IO.println("\nSUCCESS: Status updated successfully.");
                         }
                     } catch (IllegalArgumentException e) {
                         System.err.println("Error: " + e.getMessage());
@@ -349,18 +344,18 @@ public class MainMenu {
      * was successful or if an error occurred (e.g., the student ID was not found).
      */
     private void deleteStudentUI() {
-        System.out.println("\n--- Delete a Student ---");
+        IO.println("\n--- Delete a Student ---");
         int studentId;
         try {
-            System.out.print("Enter the ID of the student to delete: ");
+            IO.print("Enter the ID of the student to delete: ");
             studentId = Integer.parseInt(scanner.nextLine());
         } catch (NumberFormatException e) {
             System.err.println("Error: Invalid ID. Please enter a valid number.");
             return; // Exit the method if the input is not a number.
         }
-        boolean wasDeleted = studentService.deleteStudentById(studentId);
+        var wasDeleted = studentService.deleteStudentById(studentId);
         if (wasDeleted) {
-            System.out.println("\nSUCCESS: Student with ID " + studentId + " was deleted successfully.");
+            IO.println("\nSUCCESS: Student with ID " + studentId + " was deleted successfully.");
         } else {
             System.err.println("\nERROR: Could not delete student. No student found with ID " + studentId + ".");
         }
@@ -375,16 +370,16 @@ public class MainMenu {
      * method for formatting.
      */
     private void displayAllStudentsUI() {
-        System.out.println("\n--- Displaying All Students ---");
-        List<Student> students = studentService.findAllStudents();
+        IO.println("\n--- Displaying All Students ---");
+        var students = studentService.findAllStudents();
         if (students.isEmpty()) {
-            System.out.println("There are no students in the system to display.");
+            IO.println("There are no students in the system to display.");
             return; // Exit the method early.
         }
-        System.out.println("Total students: " + students.size());
+        IO.println("Total students: " + students.size());
         for (Student student : students) {
-            System.out.println(student);
-            System.out.println("------------------------------------------:)");
+            IO.println(student);
+            IO.println("------------------------------------------:)");
         }
     }
     /**
@@ -396,16 +391,13 @@ public class MainMenu {
      *
      * @return A greeting string appropriate for the current time of day.
      */
+
     private String getExitGreeting() {
         // Get the current hour of the day (0-23)
-        int hour = java.time.LocalTime.now().getHour();
-        if (hour >= 4 && hour < 12) { // 4:00 AM to 11:59 AM
-            return "Good Morning!";
-        } else if (hour >= 12 && hour < 20) { // 12:00 PM (noon) to 7:59 PM (19:59)
-            return "Have a great day!";
-        } else { // All other times: 8 PM (20:00) through 3:59 AM
-            return "Good Night!";
-        }
+        var hour = java.time.LocalTime.now().getHour();
+        if (hour >= 4 && hour < 12) return "Good Morning!";
+        else if (hour >= 12 && hour < 20) return "Have a great day!";
+        else return "Good Night!";
     }
 
 }
